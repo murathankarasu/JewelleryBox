@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Product List</h1>
+    <button id="filterButton" class="filter-button">Filters</button>
+</header>
+
+<main>
+    <section id="product-slider">
+        <button id="prevButton" class="slider-button">&lt;</button>
+        <div id="product-container" class="scrollable">
+        </div>
+        <button id="nextButton" class="slider-button">&gt;</button>
+    </section>
+</main>
+
+<div id="filterPopup" class="filter-popup hidden">
+    <div class="filter-content">
+        <h2>Filter Products</h2>
+        <label>
+            Min Price:
+            <input type="number" id="minPrice" placeholder="Enter minimum price">
+        </label>
+        <label>
+            Max Price:
+            <input type="number" id="maxPrice" placeholder="Enter maximum price">
+        </label>
+        <label>
+            Min Popularity:
+            <input type="number" id="minPopularity" placeholder="Enter minimum popularity (1-100)">
+        </label>
+        <button id="applyFilters" class="apply-button">Apply Filters</button>
+    </div>
+</div>
+
+<script src="frontendapp.js" defer></script>
+</body>
+</html>
