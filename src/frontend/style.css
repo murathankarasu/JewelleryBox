@@ -14,6 +14,7 @@ header {
 }
 
 header h1 {
+    top: auto;
     font-size: 45px;
     font-weight: normal;
     font-family: 'Avenir', sans-serif;
@@ -21,36 +22,98 @@ header h1 {
     margin: 0;
 }
 
+.filter-button {
+    position: absolute;
+    font-family: 'Montserrat', sans-serif;
+    top: auto;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #131313;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    color: #131313;
+    font-weight: bold;
+}
+
 .filter-popup {
     position: fixed;
-    top: 50px;
-    right: 10px;
-    width: 300px;
-    background-color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    top: 100px;
+    right: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    width: 400px;
     padding: 20px;
-    z-index: 1000;
+    z-index: 100;
+}
+
+.hidden {
     display: none;
 }
 
-.filter-popup.hidden {
-    display: none;
+.filter-content {
+    display: flex;
+    font-family: Montserrat, sans-serif;
+    color: #131313;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-content h3 {
+    margin: 0 0 5px;
+    font-family: 'Avenir', sans-serif;
+    font-size: 10px;
+}
+
+.filter-content label {
+    font-size: 15px;
+    margin-bottom: 5px;
+    font-family: 'Avenir', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-content label {
+    font-size: 14px;
+    font-weight: normal;
+    font-family: 'Avenir', sans-serif;
+    line-height: 1.4;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.filter-content input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 
-.filter-button {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    background-color: #E1A4A9;
-    border: none;
-    border-radius: 5px;
+.filter-content input[type="number"]:focus {
+    border-color: #E6CA97;
+    outline: none;
+}
+
+.apply-button {
+    padding: 10px;
+    background-color: #878585;
     color: white;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
-    z-index: 1100;
+}
+
+.apply-button:hover {
+    background-color: #E6CA97;
 }
 
 #product-slider {
@@ -90,6 +153,9 @@ header h1 {
 }
 
 .product {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: lighter;
     display: inline-block;
     background: white;
     border-radius: 8px;
@@ -109,17 +175,17 @@ header h1 {
 
 .product h2 {
     font-size: 15px;
-    font-weight: normal;
     font-family: 'Montserrat', sans-serif;
-    margin: 10px 0;
+    font-weight: 500;
 
 }
 
 .product .price {
-    font-size: 14px;
+    font-size: 15px;
     color: #000000;
-    font-family: 'Montserrat', sans-serif;
-    margin-bottom: 10px;
+    font-family: 'Montserrat Regular', sans-serif;
+    font-weight: 300;
+
 }
 
 .color-picker {
@@ -154,6 +220,11 @@ button.white {
     background-color: #D9D9D9;
 }
 
+.color-picker button.active {
+    outline: 2px solid white;
+    box-shadow: 0 0 0 3px black;
+}
+
 .star-rating {
     display: flex;
     justify-content: center;
@@ -162,11 +233,24 @@ button.white {
 
 .star {
     font-size: 1.5rem;
-    color: #FFD700;
+    color: #E6CA97;
     margin: 0 2px;
+    
 }
 
 .star.empty {
-    color: #E1A4A9;
+    color: #878585;
+    margin: 0 2px;
+    font-size: 1.5rem;
+
 }
+
+.star-score {
+    font-size: 14px;
+    color: #555;
+    margin-left: 8px;
+    margin-top: 10px;
+    font-family: 'Avenir Book', sans-serif;
+}
+
 

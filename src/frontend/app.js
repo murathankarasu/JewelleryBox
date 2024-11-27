@@ -1,24 +1,29 @@
 const API_URL = "http://localhost:3000/products";
 const productContainer = document.getElementById("product-container");
+let allProducts = [];
 
 async function fetchProducts() {
     try {
         const response = await fetch(API_URL);
         if (!response.ok) {
-            throw new Error("API'den ürün verileri alınamadı");
+            throw new Error("API error");
         }
-        const products = await response.json();
-        displayProducts(products);
+        allProducts = await response.json();
+        displayProducts(allProducts);
     } catch (error) {
-        console.error("Ürünler alınırken hata oluştu:", error.message);
+        console.error("Product error", error.message);
     }
 }
 
 function displayProducts(products) {
     productContainer.innerHTML = "";
-    const visibleProducts = products.slice(0, 4);
 
-    visibleProducts.forEach((product) => {
+    if (products.length === 0) {
+        productContainer.innerHTML = `<div class="no-products">No products match the selected filters.</div>`;
+        return;
+    }
+
+    products.forEach((product) => {
         const productCard = document.createElement("div");
         productCard.classList.add("product");
 
@@ -28,7 +33,7 @@ function displayProducts(products) {
         productCard.innerHTML = `
             <img src="${currentImage}" alt="${product.name}">
             <h2>${product.name}</h2>
-            <div class="price">$${product.price}</div>
+            <div class="price">$${product.price} USD</div>
             <div class="color-picker">
                 <button class="yellow" onclick="changeImage(this, '${product.images.yellow}', 'Yellow Gold')"></button>
                 <button class="rose" onclick="changeImage(this, '${product.images.rose}', 'Rose Gold')"></button>
@@ -37,62 +42,25 @@ function displayProducts(products) {
             <div class="selected-color">${currentColor}</div>
             <div class="star-rating">${generateStars(product.popularityScore)}</div>
         `;
-
-        productContainer.appendChild(productCard);
-    });
-
-    const nextButton = document.getElementById("nextButton");
-    const prevButton = document.getElementById("prevButton");
-
-    nextButton.addEventListener("click", () => {
-        productContainer.scrollBy({
-            left: 300 * 4,
-            behavior: "smooth",
-        });
-    });
-
-    prevButton.addEventListener("click", () => {
-        productContainer.scrollBy({
-            left: -300 * 4,
-            behavior: "smooth",
-        });
-    });
-
-    products.slice(4).forEach((product) => {
-        const productCard = document.createElement("div");
-        productCard.classList.add("product");
-
-        let currentImage = product.images.yellow;
-        let currentColor = "Yellow Gold";
-
-        productCard.innerHTML = `
-            <img src="${currentImage}" alt="${product.name}">
-            <h2>${product.name}</h2>
-            <div class="price">$${product.price}</div>
-            <div class="color-picker">
-                <button class="yellow" onclick="changeImage(this, '${product.images.yellow}', 'Yellow Gold')"></button>
-                <button class="rose" onclick="changeImage(this, '${product.images.rose}', 'Rose Gold')"></button>
-                <button class="white" onclick="changeImage(this, '${product.images.white}', 'White Gold')"></button>
-            </div>
-            <div class="selected-color">${currentColor}</div>
-            <div class="star-rating">${generateStars(product.popularityScore)}</div>
-        `;
-
         productContainer.appendChild(productCard);
     });
 }
 
 function generateStars(score) {
     const maxStars = 5;
-    const filledStars = Math.round((score / 100) * maxStars); // Puanı 5 üzerinden hesapla
+    const roundedScore = Math.round((score / 100) * maxStars);
     let starsHTML = "";
-    for (let i = 1; i <= maxStars; i++) {
-        if (i <= filledStars) {
-            starsHTML += '<span class="star">★</span>';
-        } else {
-            starsHTML += '<span class="star empty">☆</span>';
-        }
+
+    for (let i = 1; i <= roundedScore; i++) {
+        starsHTML += '<span class="star">★</span>';
     }
+
+    const emptyStars = maxStars - roundedScore;
+    for (let i = 1; i <= emptyStars; i++) {
+        starsHTML += '<span class="star empty">☆</span>';
+    }
+
+    starsHTML += ` <span class="star-score">${roundedScore} / ${maxStars}</span>`;
     return starsHTML;
 }
 
@@ -106,9 +74,10 @@ function changeImage(button, newImage, colorName) {
 
     const colorButtons = productCard.querySelectorAll(".color-picker button");
     colorButtons.forEach((btn) => {
-        btn.style.outline = "none";
+        btn.classList.remove("active");
     });
-    button.style.outline = "2px solid black";
+
+    button.classList.add("active");
 }
 
 const filterButton = document.getElementById("filterButton");
@@ -124,6 +93,12 @@ applyFiltersButton.addEventListener("click", () => {
     const maxPrice = parseFloat(document.getElementById("maxPrice").value) || Infinity;
     const minPopularity = parseFloat(document.getElementById("minPopularity").value) || 0;
 
+    if (allProducts.length === 0) {
+        console.error("Error: No products match the selected filters.");
+        return;
+    }
+
+
     const filteredProducts = allProducts.filter((product) => {
         const price = parseFloat(product.price);
         const popularity = product.popularityScore;
@@ -133,4 +108,23 @@ applyFiltersButton.addEventListener("click", () => {
     displayProducts(filteredProducts);
     filterPopup.classList.add("hidden");
 });
+
+const nextButton = document.getElementById("nextButton");
+const prevButton = document.getElementById("prevButton");
+
+nextButton.addEventListener("click", () => {
+    productContainer.scrollBy({
+        left: productContainer.offsetWidth,
+        behavior: "smooth",
+    });
+});
+
+prevButton.addEventListener("click", () => {
+    productContainer.scrollBy({
+        left: -productContainer.offsetWidth,
+        behavior: "smooth",
+    });
+});
+
 fetchProducts();
+

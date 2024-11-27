@@ -12,7 +12,7 @@ export const getAllProducts = async (req, res) => {
 
         res.status(200).json(enrichedProducts);
     } catch (error) {
-        console.error("Ürünler alınırken hata oluştu:", error.message);
+        console.error("Product Error:", error.message);
         res.status(500).json({ error: error.message });
     }
 };

@@ -15,8 +15,8 @@ export const getProducts = async () => {
         const data = await fs.readFile(filePath, "utf-8");
         return JSON.parse(data);
     } catch (error) {
-        console.error("Ürün dosyası okunurken hata oluştu:", error.message);
-        throw new Error("Ürün dosyası yüklenemedi.");
+        console.error("Product Read:", error.message);
+        throw new Error("File Error:.");
     }
 };
 
@@ -24,20 +24,20 @@ export const fetchGoldPrice = async () => {
     try {
         const response = await axios.get("https://www.goldapi.io/api/XAU/USD", {
             headers: {
-                "x-access-token": "goldapi-c1rg6osm3yq8cnf-io",
+                "x-access-token": "goldapi-3rqqhism3zrz3ko-io",
                 "Content-Type": "application/json",
             },
         });
 
         if (response.status !== 200) {
-            console.error("GoldAPI Hata Yanıtı:", response.data);
-            throw new Error("GoldAPI'den geçerli bir yanıt alınamadı.");
+            console.error("GoldAPI Error:", response.data);
+            throw new Error("GoldAPI data error");
         }
 
         const goldPrice = response.data.price / 31.1035; // Ounce to grams
         return goldPrice;
     } catch (error) {
-        console.error("Altın fiyatı alınırken hata oluştu:", error.response?.data || error.message);
-        throw new Error("Altın fiyatı alınamadı.");
+        console.error("Gold Price Error :", error.response?.data || error.message);
+        throw new Error("Gold Price Error.");
     }
 };
